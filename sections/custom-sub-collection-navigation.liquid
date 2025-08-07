@@ -1,0 +1,236 @@
+
+<div class="navigation-wrapper">
+    <div class="navigation-element-scroll">
+        <div class="navigation-elements">
+                {% for block in section.blocks %}
+                    {% if block.type == "sub-collection" %}
+                        <a href="{{ block.settings.collection_url }}">
+                            <div class="navigation-card">    
+                                <div class="image-container">
+                                    {{ block.settings.subImage | image_url: width: 200 | image_tag  }}
+                                </div>
+                                <div class="header-container">
+                                    <h3>{{ block.settings.title }}</h3>
+                                </div>
+                            </div>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+        </div>
+    </div>
+    <div class="navigation-details">
+        <div class="products-indicator"><span class="down">{{ "V" }}</span>{{ "Products" }}</div>
+        <div class="seperator"></div>
+        <div class="button-container">
+            <button class="left-button">&lt;</button>
+            <button class="right-button">&gt;</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const scrollContent = document.querySelector('.navigation-element-scroll');
+        const leftButton = document.querySelector('.left-button');
+        const rightButton = document.querySelector('.right-button');
+
+        const scrollAmount = scrollContent.clientWidth;
+
+        if(leftButton && rightButton && scrollContent) {
+            leftButton.addEventListener('click', () => {
+                scrollContent.scrollLeft -= scrollAmount;
+            })
+
+            rightButton.addEventListener('click', () => {
+                scrollContent.scrollLeft += scrollAmount;
+            })
+        }
+    })
+</script>
+
+<style>
+/* GENERAL LAYOUT */
+  .sub-collection-wrapper{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+  .navigation-wrapper{
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+}
+/* GENEREAL LAYOUT ENDS */
+
+/* ONLY FOR SCROLLING */
+.navigation-element-scroll{
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch; /* Added for mobile swipe problem */
+
+    /* Hiding hideous scrollbar */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.navigation-element-scroll::-webkit-scrollbar{
+    display: none;
+}
+/* ONLY FOR SCROLLING ENDS */
+
+/* INNER LAYOUT */
+.navigation-elements{
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    padding-bottom: 24px;
+}
+/* INNER LAYOUT ENDS */
+
+/* CARD LAYOUT */
+.navigation-card{
+    min-width: 400px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    border: 1px solid gray;
+    overflow: hidden;
+}
+
+.navigation-card:hover {
+  cursor: pointer;
+}
+
+.image-container{
+    height:200px;
+    padding-left: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-container{
+    padding-right: 16px;
+    text-align: center;
+}
+/* CARD LAYOUT ENDS */
+
+/* DETAILS LAYOUT */
+.navigation-details{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.products-indicator{
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    gap: 10px;
+}
+
+.products-indicator span{
+    font-size: 20px;
+    color: gray;
+}
+
+.seperator{
+    height: 2px;
+    width: 80%;
+    background-color: gray;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.button-container button{
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    border: 1px solid gray;
+}
+
+.button-container button:hover {
+    cursor: pointer;
+}
+/* DETAILS LAYOUT END */
+
+/* MEDIA-Q STARTS HERE */
+@media screen and (max-width: 768px){
+    /* HIDING BUTTONS */
+    .button-container{
+        display: none;
+    }
+
+    .navigation-card{
+        min-width: 250px;
+        height: 150px;
+        flex-direction: column;
+        gap: 16px;
+        padding: 8px;
+    }
+
+    .image-container{
+        width: 100px;
+        height: 100px;
+    }
+
+    .seperator{
+        width: 70%;
+    }
+}
+/* MEDIA-Q ENDS HERE */
+
+</style>
+
+{% schema %}
+
+{
+    "name": "Sub Collection Navigation",
+    "tag": "section",
+    "class": "sub-collection-wrapper",
+    "settings": [
+        {
+            "type": "text",
+            "label": "Title",
+            "id": "title",
+        }
+    ],
+    "blocks": [
+        {
+            "type": "sub-collection",
+            "name": "sub-collection",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                }, {
+                    "type": "image_picker",
+                    "id": "subImage",
+                    "label": "Image",
+                }, {
+                    "type": "url",
+                    "id": "collection-url",
+                    "label": "Collection Link",
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Sub-Collection Navigation",
+        }
+    ]
+}
+
+{% endschema %}

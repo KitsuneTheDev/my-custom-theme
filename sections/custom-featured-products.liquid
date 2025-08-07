@@ -1,0 +1,24 @@
+{% liquid
+  assign featured_products = collection.metafields.custom.feats.value
+%}
+
+{% for product in featured_products %}
+    <p>{{ product.title }}</p>
+    <p>{{ product.price }}</p>
+{% endfor %}
+
+{% schema %}
+{
+    "name": "Custom Featured Products",
+    "tag": "section",
+    "class": "custom-featured-products",
+    "settings": [{
+        "type": "header",
+        "content": "Featured Products",
+    }],
+    "presets": [{
+        "name": "Featured Products",
+    }]
+}
+
+{% endschema %}
